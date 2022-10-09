@@ -70,18 +70,22 @@ class StatsView @JvmOverloads constructor(
 
         var startFrom = -90F
         for ((index, datum) in data.withIndex()) {
-            val angle = 360F * datum
+            val angle = datum / (data.sum()/ 360F)
             paint.color = colors.getOrNull(index) ?: randomColor()
             canvas.drawArc(oval, startFrom, angle, false, paint)
             startFrom += angle
         }
 
         canvas.drawText(
-            "%.2f%%".format(data.sum() * 100),
+            "%.2f%%".format(100F),
             center.x,
             center.y + textPaint.textSize / 4,
             textPaint,
         )
+
+        paint.color = colors[0]
+
+        canvas.drawPoint(center.x, center.y - radius, paint)
     }
 
     private fun randomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
